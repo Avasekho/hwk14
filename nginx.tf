@@ -12,7 +12,7 @@ provider "aws" {
 }
 
 resource "aws_instance" "nginx_server" {
-  ami                    = ""
+  ami                    = "ami-08d4ac5b634553e16"
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.open_port_80.id]
   key_name               = "us-east-1-key"
