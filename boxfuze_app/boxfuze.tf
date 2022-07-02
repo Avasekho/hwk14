@@ -38,7 +38,6 @@ resource "aws_instance" "prod_server" {
 
 resource "aws_s3_bucket" "bucket" {
   bucket = "boxfuze.avasekho.test"
-  acl    = "private"
 
   tags = {
     Name = "boxfuze bucket"
