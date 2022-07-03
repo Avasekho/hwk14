@@ -30,7 +30,7 @@ cd /tmp/
 git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/boxfuze boxfuze
 cd /tmp/boxfuze
 mvn package
-aws s3 mv -f /tmp/boxfuze/target/hello-1.0.war s3://boxfuze.avasekho.test/
+aws s3 cp /tmp/boxfuze/target/hello-1.0.war s3://boxfuze.avasekho.test/hello-1.0.war
 EOT
   }
 }
@@ -49,7 +49,7 @@ resource "aws_instance" "prod_server" {
 
   provisioner "local-exec" {
     command = <<EOT
-sudo aws s3 cp s3://boxfuze.avasekho.test/hello-1.0.war /var/lib/tomcat9/webapps/
+sudo aws s3 cp s3://boxfuze.avasekho.test/hello-1.0.war /var/lib/tomcat9/webapps/hello-1.0.war
 ll /var/lib/tomcat9/webapps/
 EOT
   }
