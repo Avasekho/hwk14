@@ -1,4 +1,6 @@
 #!/bin/bash
+apt update -y
+apt install -y maven default-jdk awscli
 mkdir -p /home/ubuntu/.aws/
 mkdir -p /home/ubuntu/.ssh/
 mv /home/ubuntu/credentials /home/ubuntu/.aws/credentials
