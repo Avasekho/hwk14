@@ -43,8 +43,7 @@ resource "aws_instance" "build_server" {
   }
   provisioner "remote-exec" {
     inline = [
-"cd /tmp/",
-"git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/boxfuze boxfuze",
+"git clone ssh://APKAVNWETNK3NSW6CY4P@git-codecommit.us-east-1.amazonaws.com/v1/repos/boxfuze /tmp/boxfuze",
 "cd /tmp/boxfuze",
 "mvn package",
 "aws s3 cp /tmp/boxfuze/target/hello-1.0.war s3://boxfuze.avasekho.test/hello-1.0.war",
