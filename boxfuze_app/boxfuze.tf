@@ -43,12 +43,13 @@ resource "aws_instance" "build_server" {
   }
   provisioner "remote-exec" {
     inline = [
-"mkdir /home/ubuntu/.aws/",
-"mkdir /home/ubuntu/.ssh/",
+"mkdir -p /home/ubuntu/.aws/",
+"mkdir -p /home/ubuntu/.ssh/",
 "mv /home/ubuntu/credentials /home/ubuntu/.aws/credentials",
 "mv /home/ubuntu/id_rsa /home/ubuntu/.ssh/id_rsa",
 "mv /home/ubuntu/config /home/ubuntu/.ssh/config",
-"GIT_SSH_COMMAND=ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no git clone ssh://APKAVNWETNK3NSW6CY4P@git-codecommit.us-east-1.amazonaws.com/v1/repos/boxfuze /tmp/boxfuze",
+"git config --global core.sshCommand 'ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no'",
+"git clone ssh://APKAVNWETNK3NSW6CY4P@git-codecommit.us-east-1.amazonaws.com/v1/repos/boxfuze /tmp/boxfuze",
 "cd /tmp/boxfuze",
 "mvn package",
 "aws s3 cp /tmp/boxfuze/target/hello-1.0.war s3://boxfuze.avasekho.test/hello-1.0.war",
@@ -80,7 +81,7 @@ resource "aws_instance" "prod_server" {
   }
   provisioner "remote-exec" {
     inline = [
-    "mkdir /home/ubuntu/.aws/",
+    "mkdir -p /home/ubuntu/.aws/",
     "mv /home/ubuntu/credentials /home/ubuntu/.aws/credentials",
     "sudo chmod 777 /var/lib/tomcat9/webapps/",
     "aws s3 cp s3://boxfuze.avasekho.test/hello-1.0.war /var/lib/tomcat9/webapps/hello-1.0.war",
