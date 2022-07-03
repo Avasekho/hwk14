@@ -57,7 +57,6 @@ resource "aws_instance" "prod_server" {
   instance_type          = "t2.micro"
   vpc_security_group_ids = [aws_security_group.open_port_22_8080.id]
   key_name               = "us-east-1-key"
-  user_data              = file("prod_data.sh")
   depends_on             = [aws_s3_bucket.bucket, aws_instance.build_server]
 
   tags = {
@@ -76,10 +75,8 @@ resource "aws_instance" "prod_server" {
   }
   provisioner "remote-exec" {
     inline = [
-    "mkdir -p /home/ubuntu/.aws/",
-    "mv /home/ubuntu/credentials /home/ubuntu/.aws/credentials",
-    "sudo chmod 777 /var/lib/tomcat9/webapps/",
-    "/usr/bin/aws s3 cp s3://boxfuze.avasekho.test/hello-1.0.war /var/lib/tomcat9/webapps/hello-1.0.war",
+      "chmod +x /tmp/provision_prod.sh",
+      "/tmp/provision_prod.sh",
     ]
   }
 }
