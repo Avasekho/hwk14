@@ -49,8 +49,8 @@ resource "aws_instance" "prod_server" {
 
   provisioner "local-exec" {
     command = <<EOT
-sudo aws s3 cp s3://boxfuze.avasekho.test/hello-1.0.war /var/lib/tomcat9/webapps/hello-1.0.war
-ll /var/lib/tomcat9/webapps/
+chmod 777 /var/lib/tomcat9/webapps/
+aws s3 cp s3://boxfuze.avasekho.test/hello-1.0.war /var/lib/tomcat9/webapps/hello-1.0.war
 EOT
   }
 }
