@@ -23,6 +23,12 @@ resource "aws_instance" "build_server" {
     Name = "Build Server"
   }
 
+  connection {
+    type     = "ssh"
+    user     = "ubuntu"
+    private_key = file("/home/avasekho/us-east-1-key.pem")
+    host     = self.public_ip
+  }
   provisioner "remote-exec" {
     inline = [
 "cd /tmp/",
@@ -46,8 +52,15 @@ resource "aws_instance" "prod_server" {
     Name = "Prod Server"
   }
 
+  connection {
+    type     = "ssh"
+    user     = "ubuntu"
+    private_key = file("/home/avasekho/us-east-1-key.pem")
+    host     = self.public_ip
+  }
   provisioner "remote-exec" {
     inline = [
+    "sudo chmod 777 /var/lib/tomcat9/webapps/",
     "aws s3 cp s3://boxfuze.avasekho.test/hello-1.0.war /var/lib/tomcat9/webapps/hello-1.0.war",
     ]
   }
