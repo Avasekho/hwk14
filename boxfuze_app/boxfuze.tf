@@ -25,6 +25,7 @@ resource "aws_instance" "build_server" {
 
   provisioner "local-exec" {
     command = <<EOT
+pip3 install --upgrade awscli
 cd /tmp/
 git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/boxfuze boxfuze
 cd /tmp/boxfuze
