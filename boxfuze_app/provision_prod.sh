@@ -1,6 +1,6 @@
 #!/bin/bash
-apt update -y
-apt install -y tomcat9 awscli
+sudo apt update -y
+sudo apt install -y tomcat9 awscli
 mkdir -p /home/ubuntu/.aws/
 mv /home/ubuntu/credentials /home/ubuntu/.aws/credentials
 sudo chmod 777 /var/lib/tomcat9/webapps/
