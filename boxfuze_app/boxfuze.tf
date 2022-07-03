@@ -29,6 +29,18 @@ resource "aws_instance" "build_server" {
     private_key = file("/home/avasekho/us-east-1-key.pem")
     host     = self.public_ip
   }
+  provisioner "file" {
+    source      = "~/.aws/credentials"
+    destination = "~/.aws/credentials"
+  }
+    provisioner "file" {
+    source      = "~/.ssh/id_rsa"
+    destination = "~/.ssh/id_rsa"
+  }
+    provisioner "file" {
+    source      = "~/.ssh/config"
+    destination = "~/.ssh/config"
+  }
   provisioner "remote-exec" {
     inline = [
 "cd /tmp/",
@@ -57,6 +69,10 @@ resource "aws_instance" "prod_server" {
     user     = "ubuntu"
     private_key = file("/home/avasekho/us-east-1-key.pem")
     host     = self.public_ip
+  }
+  provisioner "file" {
+    source      = "~/.aws/credentials"
+    destination = "~/.aws/credentials"
   }
   provisioner "remote-exec" {
     inline = [
