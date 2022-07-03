@@ -15,8 +15,9 @@ resource "aws_instance" "build_server" {
   ami                    = "ami-08d4ac5b634553e16"
   instance_type          = "t2.micro"
   key_name               = "us-east-1-key"
+  vpc_security_group_ids = [aws_security_group.open_port_22_8080.id]
   user_data              = file("build_data.sh")
-  depends_on = [aws_s3_bucket.bucket]
+  depends_on             = [aws_s3_bucket.bucket]
 
   tags = {
     Name = "Build Server"
@@ -25,10 +26,10 @@ resource "aws_instance" "build_server" {
   provisioner "local-exec" {
     command = <<EOT
 cd /tmp/
-git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git boxfuze
+git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/boxfuze boxfuze
 cd /tmp/boxfuze
 mvn package
-aws s3 cp /tmp/boxfuze/target/target-1.0.war s3://boxfuze.avasekho.test/
+aws s3 cp /tmp/boxfuze/target/hello-1.0.war s3://boxfuze.avasekho.test/
 EOT
   }
 }
@@ -36,10 +37,10 @@ EOT
 resource "aws_instance" "prod_server" {
   ami                    = "ami-08d4ac5b634553e16"
   instance_type          = "t2.micro"
-  vpc_security_group_ids = [aws_security_group.open_port_8080.id]
+  vpc_security_group_ids = [aws_security_group.open_port_22_8080.id]
   key_name               = "us-east-1-key"
   user_data              = file("prod_data.sh")
-  depends_on = [aws_s3_bucket.bucket, aws_instance.build_server]
+  depends_on             = [aws_s3_bucket.bucket, aws_instance.build_server]
 
   tags = {
     Name = "Prod Server"
@@ -58,9 +59,17 @@ resource "aws_s3_bucket" "bucket" {
   }
 }
 
-resource "aws_security_group" "open_port_8080" {
+resource "aws_security_group" "open_port_22_8080" {
   name        = "allow_8080_for_tomcat"
   description = "Allow inbound traffic on port 8080"
+
+  ingress {
+    description = "Open port for tomcat"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
   ingress {
     description = "Open port for tomcat"

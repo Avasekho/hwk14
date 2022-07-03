@@ -1,3 +1,3 @@
 #!/bin/bash
 apt update -y
-apt install -y maven default-jdk
+apt install -y maven default-jdk awscli
