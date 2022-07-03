@@ -16,7 +16,6 @@ resource "aws_instance" "build_server" {
   instance_type          = "t2.micro"
   key_name               = "us-east-1-key"
   vpc_security_group_ids = [aws_security_group.open_port_22_8080.id]
-  user_data              = file("build_data.sh")
   depends_on             = [aws_s3_bucket.bucket]
 
   tags = {
