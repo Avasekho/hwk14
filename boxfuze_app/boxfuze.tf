@@ -25,7 +25,7 @@ resource "aws_instance" "build_server" {
   provisioner "local-exec" {
     command = <<EOT
 cd /tmp/
-git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git
+git clone https://github.com/boxfuse/boxfuse-sample-java-war-hello.git boxfuze
 cd /tmp/boxfuze
 mvn package
 aws s3 cp /tmp/boxfuze/target/target-1.0.war s3://boxfuze.avasekho.test/
