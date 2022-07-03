@@ -48,7 +48,7 @@ resource "aws_instance" "prod_server" {
   }
 
   provisioner "local-exec" {
-    command = "aws s3 cp s3://boxfuze.avasekho.test/target-1.0.war /var/lib/tomcat9/webapps/"
+    command = "aws s3 cp s3://boxfuze.avasekho.test/hello-1.0.war /var/lib/tomcat9/webapps/"
   }
 }
 
