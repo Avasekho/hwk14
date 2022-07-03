@@ -73,6 +73,10 @@ resource "aws_instance" "prod_server" {
     source      = "/root/.aws/credentials"
     destination = "/home/ubuntu/credentials"
   }
+    provisioner "file" {
+    source      = "provision_prod.sh"
+    destination = "/tmp/provision_prod.sh"
+  }
   provisioner "remote-exec" {
     inline = [
       "chmod +x /tmp/provision_prod.sh",
