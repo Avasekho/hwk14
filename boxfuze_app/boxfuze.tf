@@ -23,9 +23,8 @@ resource "aws_instance" "build_server" {
     Name = "Build Server"
   }
 
-  provisioner "local-exec" {
+  provisioner "remote-exec" {
     command = <<EOT
-pip3 install --upgrade awscli
 cd /tmp/
 git clone https://git-codecommit.us-east-1.amazonaws.com/v1/repos/boxfuze boxfuze
 cd /tmp/boxfuze
@@ -47,11 +46,8 @@ resource "aws_instance" "prod_server" {
     Name = "Prod Server"
   }
 
-  provisioner "local-exec" {
-    command = <<EOT
-chmod 777 /var/lib/tomcat9/webapps/
-aws s3 cp s3://boxfuze.avasekho.test/hello-1.0.war /var/lib/tomcat9/webapps/hello-1.0.war
-EOT
+  provisioner "remote-exec" {
+    command = "aws s3 cp s3://boxfuze.avasekho.test/hello-1.0.war /var/lib/tomcat9/webapps/hello-1.0.war"
   }
 }
 
